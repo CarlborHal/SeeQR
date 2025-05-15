@@ -47,10 +47,12 @@ const connectionModel: connectionModelType = {
     ) {
       try {
         configExists.rds_pg = true;
-        await connectionFunctions.RDS_PG_DBConnect(dbState.rds_pg_options);
+        // await connectionFunctions.RDS_PG_DBConnect(dbState.rds_pg_options);
+          await connectionFunctions.RDS_PG_DBConnect(dbState.rds_pg_options);
         dbState.dbsInputted.rds_pg = true;
         logger('CONNECTED TO RDS PG DATABASE!', LogType.SUCCESS);
       } catch (error) {
+        console.log(error)
         dbState.dbsInputted.rds_pg = false;
         logger('FAILED TO CONNECT TO RDS PG DATABASE', LogType.ERROR);
       }

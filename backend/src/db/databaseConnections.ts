@@ -4,6 +4,8 @@ import sqlite3 from 'sqlite3';
 import { LogType } from '../../../shared/types/types';
 import logger from '../utils/logging/masterlog';
 import pools from './poolVariables';
+import fs from 'fs'
+import path from 'path'
 
 export default {
   /**
@@ -17,6 +19,7 @@ export default {
     const newPool = new Pool({ connectionString: newURI });
     pools.pg_pool = newPool;
     // await pools.pg_pool.connect(); this is unnecessary for making queries, and causes pg error when trying to drop db
+    //! need to update this
     await pools.pg_pool.query('SELECT pg_database.datname FROM pg_database'); // this test query will throw an error if connection failed
   },
 
@@ -42,7 +45,10 @@ export default {
         }
    */
   async MSQL_DBConnect(MYSQL_CREDS: mysql.PoolOptions) {
+        console.log('i am here')
+    console.log("MYSQL", MYSQL_CREDS)
     if (pools.msql_pool) await pools.msql_pool.end();
+
     pools.msql_pool = mysql.createPool({ ...MYSQL_CREDS });
   },
 
@@ -72,8 +78,16 @@ export default {
    * @param RDS_PG_INFO from config file
    */
   async RDS_PG_DBConnect(RDS_PG_INFO: PoolConfig) {
-    pools.rds_pg_pool = new Pool({ ...RDS_PG_INFO });
-    await pools.rds_pg_pool.connect();
+  //   console.log("RDSCONNECTHAPPENING")
+  //   const cert = path.resolve(__dirname, 'us-east-2-bundle.pem').toString()
+  //   RDS_PG_INFO.ssl= {
+  //   ca: fs.readFileSync(cert),// this is required
+  //   rejectUnauthorized: true,
+  // }
+  //   // console.log({ ...RDS_PG_INFO })
+  //   pools.rds_pg_pool = new Pool({ ...RDS_PG_INFO });
+  //       // pools.rds_pg_pool = new Pool({connectionString: '"postgres://postgres:hanshotfirst21@database-1.c1y4sawmyo3c.us-east-2.rds.amazonaws.com:5432/postgres?sslmode=require"'});
+  //   await pools.rds_pg_pool.connect();
   },
 
   /**

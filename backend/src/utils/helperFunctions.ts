@@ -76,7 +76,8 @@ const helperFunctions: HelperFunctions = {
   // import SQL file into new DB created
   runSQLFunc: function runSQLFunc(dbName, file, dbType: DBType) {
     const SQL_data = docConfig.getFullConfig();
-    const PG = `psql -U ${SQL_data?.pg_options.user} -d "${dbName}" -f "${file}" -p ${SQL_data?.pg_options.port}`;
+    console.log("SQL_data", SQL_data)
+    const PG = `psql -U ${SQL_data?.pg_options.user} -d "${dbName}" -f "${file}" -p ${SQL_data?.pg_options.port}`; //remember
     const MYSQL = `mysql -u ${SQL_data?.mysql_options.user} --port=${SQL_data?.mysql_options.port} ${dbName} < ${file}`;
     if (dbType === DBType.Postgres || dbType === DBType.RDSPostgres) return PG;
     if (dbType === DBType.MySQL || dbType === DBType.RDSMySQL) return MYSQL;
@@ -140,7 +141,7 @@ const helperFunctions: HelperFunctions = {
         {
           timeout: 2500,
           // env: {PGPASSWORD: SQL_data?.pg_options.password },
-          env: envPW,
+          env: { ...process.env, ...envPW },
         },
         (error, stdout, stderr) => {
           if (error) {

@@ -12,6 +12,7 @@ const dev: boolean = process.env.NODE_ENV === 'development';
 
 import('./src/ipcHandlers/index');
 fixPath();
+// console.log('CURRENT ENV PATH:', process.env.PATH);
 // Keep a global reference of the window objects, if you don't,
 // the window will be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: BrowserWindow | null;
